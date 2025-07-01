@@ -10,6 +10,8 @@ class DoctorAvailabilitySerializer(serializers.ModelSerializer):
     def validate(self, data):
         start_time = data['start_time']
         end_time = data['end_time']
+        doctor = data['doctor']
+        day_of_week = data['day_of_week']
 
         if isinstance(start_time, str):
             start_time = datetime.strptime(start_time, "%H:%M:%S").time()
@@ -20,13 +22,23 @@ class DoctorAvailabilitySerializer(serializers.ModelSerializer):
         if start_time >= end_time:
             raise serializers.ValidationError("Start time must be before end time.")
 
-        if data['day_of_week'] not in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
+        if day_of_week not in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']:
             raise serializers.ValidationError("Invalid day of the week.")
 
         
         duration = (datetime.combine(datetime.today(), end_time) - datetime.combine(datetime.today(), start_time)).total_seconds() / 60
         if duration not in [15, 30, 45, 60]:
             raise serializers.ValidationError("Availability must be for 15, 30, 45, or 60 minutes.")
+        
+        duplicateSlot = DoctorAvailability.objects.filter(
+            doctor=doctor,
+            day_of_week=day_of_week,
+            start_time__lt=end_time,
+            end_time__gt=start_time
+        )
+        if duplicateSlot.exists():
+            raise serializers.ValidationError("This time slot is Duplicate, You can provide only one slot at same time.")
+
         return data
         
 
@@ -57,6 +69,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         day_of_week = data['day_of_week']
         start_time = data['start_time']
         end_time = data['end_time']
+        patient = data['patient']
 
         if isinstance(start_time, str):
             start_time = datetime.strptime(start_time, "%H:%M:%S").time()
@@ -74,6 +87,16 @@ class AppointmentSerializer(serializers.ModelSerializer):
         duration = (datetime.combine(datetime.today(), end_time) - datetime.combine(datetime.today(), start_time)).total_seconds() / 60
         if duration not in [15, 30, 45, 60]:
             raise serializers.ValidationError("Availability must be for 15, 30, 45, or 60 minutes.")
+        
+        duplicateSlot = Appointment.objects.filter(
+            doctor=doctor,
+            patient= patient,
+            day_of_week=day_of_week,
+            start_time__lt=end_time,
+            end_time__gt=start_time
+        )
+        if duplicateSlot.exists():
+            raise serializers.ValidationError("This time slot is Duplicate, You can provide only one slot at same time.")
 
         availabilities = DoctorAvailability.objects.filter(doctor=doctor, day_of_week=day_of_week)
 
