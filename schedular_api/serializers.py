@@ -26,9 +26,9 @@ class DoctorAvailabilitySerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Invalid day of the week.")
 
         
-        duration = (datetime.combine(datetime.today(), end_time) - datetime.combine(datetime.today(), start_time)).total_seconds() / 60
-        if duration not in [15, 30, 45, 60]:
-            raise serializers.ValidationError("Availability must be for 15, 30, 45, or 60 minutes.")
+        # duration = (datetime.combine(datetime.today(), end_time) - datetime.combine(datetime.today(), start_time)).total_seconds() / 60
+        # if duration not in [15, 30, 45, 60]:
+        #     raise serializers.ValidationError("Availability must be for 15, 30, 45, or 60 minutes.")
         
         duplicateSlot = DoctorAvailability.objects.filter(
             doctor=doctor,

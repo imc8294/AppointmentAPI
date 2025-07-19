@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import AvailabilityListCreate, AvailabilityList, AppointmentListCreate, AppointmentList
+from .views import AvailabilityListCreate, AvailabilityList, AppointmentListCreate, AppointmentList, DoctorSlot
 from .dr_patient_views import DoctorProfileListView, DoctorProfileCreateView, PatientProfileListView, PatientProfileCreateView
 
 urlpatterns = [
@@ -15,5 +15,7 @@ urlpatterns = [
 
 
     path('appointments/add', AppointmentListCreate.as_view()),
-    path('appointments', AppointmentList.as_view())
+    path('appointments', AppointmentList.as_view()),
+
+    path('availability/slot', DoctorSlot.as_view())
 ]
