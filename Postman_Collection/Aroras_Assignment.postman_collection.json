@@ -1,8 +1,10 @@
 {
 	"info": {
-		"_postman_id": "973454c2-4427-4928-967c-4d6a0ab5b7ad",
+		"_postman_id": "cbe7d9de-5df4-4bee-b5b8-47693006501a",
 		"name": "Aroras_Assignment",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46896167",
+		"_collection_link": "https://indra-1578252.postman.co/workspace/Indra's-Workspace~1a7a033a-57e8-4c02-81cc-d5b385a5e6f1/collection/46896167-cbe7d9de-5df4-4bee-b5b8-47693006501a?action=share&source=collection_link&creator=46896167"
 	},
 	"item": [
 		{
@@ -231,6 +233,39 @@
 					"path": [
 						"api",
 						"appointments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Availability Slot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"day_of_week\":\"Monday\",\r\n    \"time_slot\":\"15\",\r\n    \"doctor\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/availability/slot",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"availability",
+						"slot"
 					]
 				}
 			},
